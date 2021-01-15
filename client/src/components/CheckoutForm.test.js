@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import { userEvent } from '@testing-library/user-event';
+import { render, screen, fireEvent } from "@testing-library/react";
+// import { userEvent } from '@testing-library/user-event';
 import CheckoutForm from "./CheckoutForm";
 
 // Write up the two tests here and make sure they are testing what the title shows
@@ -16,11 +16,13 @@ test("form header renders", () => {
 
 test("form shows success message on submit with form details", () => {
     render(<CheckoutForm />)
-    const fName =screen.getByLabelText(/first name/i)
-    userEvent.type(fName, "Francis");
 
-    const button = screen.getByRole("button");
-    userEvent.click(button);
+    const fName =screen.getByLabelText(/first name/i)
+    fireEvent.change(fName, { target: { value: "Sam" } });
+
+    const button = screen.getByRole("button", { name: /checkout/i });
+    fireEvent.change(fName, { target: { value: "Sam" } });
+    fireEvent.click(button);
 
     const success = screen.getByTestId(/successMessage/i);
     expect(success).toBeInTheDocument();
